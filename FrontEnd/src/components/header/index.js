@@ -13,7 +13,8 @@ import {
   Menu,
   Messenger,
   ArrowDown,
-  Notifications
+  Notifications,
+  Home
 } from "../../svg";
 import { useRef, useState } from "react";
 import AllMenu from "./AllMenu";
@@ -21,8 +22,7 @@ import useClickOutside from "../../helpers/clickOutside";
 import UserMenu from "../header/userMenu/index";
 
 
-export default function Header() {
-
+export default function Header({page}) {
   const { user } = useSelector((user) => ({ ...user }));
   const color = "#65676b";
   const [showSearchMenu, setShowSearchMenu] = useState(false);
@@ -61,30 +61,25 @@ export default function Header() {
       {showSearchMenu && <SearchMenu color={color} setShowSearchMenu={setShowSearchMenu} />}
 
       <div className="header_middle">
-        <Link to="/" className="middle_icon active">
-          <HomeActive />
+        <Link to="/" className={`middle_icon ${page === "home" ? "active" : "hover1"}`}>
+          {
+             page === "home" ? <HomeActive /> : <Home color={color} />
+            
+          }
+
         </Link>
         <Link to="/" className="middle_icon hover1">
           <Friends color={color} />
         </Link>
-        <Link to="/" className="middle_icon hover1">
-          <Watch color={color} />
-          <div className="middle_notification">9+</div>
-        </Link>
-        <Link to="/" className="middle_icon hover1">
-          <Market color={color} />
-        </Link>
-        <Link to="/" className="middle_icon hover1">
-          <Gaming color={color} />
-        </Link>
+        
       </div>
       <div className="header_right">
-        <Link to="/profile" className="profile_link hover1">
+        <Link to="/profile" className={`profile_link hover1 ${page==='profile' ? 'active_link':""}`}>
           <img src={user?.picture} alt="" />
           <span>{user?.first_name}</span>
         </Link>
         <div
-          className={`circle_icon hover1 ${ showAllMenu && "active_header"}`}
+          className={`circle_icon hover1 ${showAllMenu && "active_header"}`}
           ref={allMenu}>
           <div onClick={() => {
             setShowAllMenu((prev) => !prev);

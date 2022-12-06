@@ -1,8 +1,8 @@
 import { Feeling, LiveVideo, Photo } from "../../svg";
 import "./style.scss";
-export default function CreatePost({ user }) {
+export default function CreatePost({ user ,setVisible}) {
   return (
-    <div className="createPost">
+    <div className="createPost" onClick={()=>setVisible(true)}>
       <div className="createPost_header">
         <img src={user?.picture} alt="" />
         <div className="open_post hover2">

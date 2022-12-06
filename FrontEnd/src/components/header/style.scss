@@ -54,6 +54,7 @@ header {
   align-items: center;
   gap: 14px;
   transform: translateX(3px);
+  justify-content: center;
 }
 .middle_icon {
   position: relative;
@@ -588,6 +589,12 @@ header {
     fill: var(--blue-color);
   }
 }
+
+.active_link {
+  background: var(--light-blue-color);
+  color: blue;
+}
+
 
 
 //Active header--------------

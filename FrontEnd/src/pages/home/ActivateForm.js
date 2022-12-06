@@ -9,7 +9,7 @@ export default function ActivateForm({type,header,text,loading}) {
             }`} >{header}</div>
 
             <div className="popup_message">{text}</div>
-        <PropagateLoader color="#1876f2" size={30} loading={true} />
+        <PropagateLoader color="#1876f2" size={30} loading={loading} />
         </div>
     </div>
   )

@@ -4,6 +4,7 @@ const {
   validateUsername,
 } = require("../helpers/validation");
 const User = require("../models/userModel");
+const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../helpers/token");
 const { sendVerificationEmail } = require("../helpers/mailer");
@@ -71,13 +72,14 @@ exports.register = async (req, res) => {
       bDay,
       gender,
     }).save();
-    console.log(user, 'hjksadfjkhjkfads');
     const emailVerificationToken = generateToken(
       { id: user._id.toString() },
       "30m"
     );
+
+
     const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
-    sendVerificationEmail(user.email, user.first_name, url);
+   // sendVerificationEmail(user.email, user.first_name, url);
     const token = generateToken({ id: user._id.toString() }, "7d");
     res.send({
       id: user._id,
@@ -98,10 +100,17 @@ exports.register = async (req, res) => {
 exports.activateAccount = async (req, res) => {
 
   try {
+    const validUser = req.user.id;
+
     const { token } = req.body;
     const user = jwt.verify(token, process.env.TOKEN_SECRET);
 
     let check = await User.findById(user.id);
+
+    if (validUser !== user.id) {
+      return res.status(400).json({ message: "You dont have the authorization to complete this operation" });
+    }
+
     if (check.verified == true) {
       return res.status(400).json({ message: "This email is already activated" })
     } else {
@@ -146,4 +155,54 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 
+}
+
+exports.sendVerification = async (req , res)=>{
+try {
+  const id = req.user.id;
+  const user = await User.findById(id);
+  if(user.verified === true){
+    return res.status(400).json({message:"This account is already activated"})
+  }
+
+  const emailVerificationToken = generateToken(
+    { id: user._id.toString() },
+    "30m"
+  );
+  const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+  sendVerificationEmail(user.email, user.first_name, url);
+  res.status(200).json({message:"Email verification link has been sent to your email"})
+} catch (error) {
+  res.status(500).json({ message: error.message });
+}
+}
+
+exports.getProfile = async(req,res)=>{
+try {
+  const {username} = req.params;
+  const profile = await User.findOne({username}).select('-password').lean();
+  if(!profile){
+    res.json({ ok:false });
+  }
+
+  const post = await Post.find({user:profile._id}).populate('user').lean().sort({createdAt:-1});
+
+  res.json({...profile,post})
+} catch (error) {
+  res.status(500).json({message:error.message})
+}
+};
+
+exports.updateProfilePicture = async (req , res)=>{
+try {
+  const {url} = req.body;
+  const response = await User.findByIdAndUpdate(req.user.id,{
+    picture: url
+  }) 
+  res.json(url);
+  
+} catch (error) {
+  res.status(500).json({message:error.message})
+  
+}
 }

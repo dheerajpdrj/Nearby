@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema.Types;
 
 const postSchema = new mongoose.Schema(
   {
@@ -28,16 +28,13 @@ const postSchema = new mongoose.Schema(
         comment: {
           type: String,
         },
-        image: {
-          type: String,
-        },
         commentBy: {
           type: ObjectId,
           ref: "User",
         },
         commentAt: {
           type: Date,
-          default: new Date(),
+          required: true,
         },
       },
     ],

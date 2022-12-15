@@ -14,8 +14,8 @@
 @media (max-width: 1175px) {
   .stories,
   .createPost,
-  .send_verification , .post{
-    width: 84%;
+  .send_verification {
+    width: 100%;
   }
   .right_home {
     width: 18vw;
@@ -30,16 +30,17 @@
   .fb_copyright {
     display: none;
   }
-  .shortcut{
+  .shortcut {
     display: none;
   }
-  .heading , .edit_shortcut{
-    display:none;
+  .heading,
+  .edit_shortcut {
+    display: none;
   }
   .left_home {
     width: 70px;
   }
-  ::-webkit-scrollbar{
+  ::-webkit-scrollbar {
     display: none;
   }
   .left_link {
@@ -61,19 +62,19 @@
   }
   .stories,
   .createPost,
-  .send_verification , .post{
+  .send_verification {
     width: 100%;
   }
 }
 @media (max-width: 960px) {
   .createPost,
-  .send_verification , .post{
-    width: 93%;
+  .send_verification {
+    width: 100%;
   }
   .stories {
     width: 95%;
   }
- 
+
   .right_home {
     left: 78%;
     width: 20vw;
@@ -93,13 +94,12 @@
     display: none;
   }
   .createPost,
-  .send_verification , .post{
-    width: 110%;
+  .send_verification {
+    width: 100%;
   }
   .stories {
     width: 113%;
   }
-
 }
 @media (max-width: 805px) {
   .stories {
@@ -125,10 +125,9 @@
   .popup {
     width: 70vw !important;
   }
-  .home_middle{
-    width:75vw;
+  .home_middle {
+    width: 75vw;
   }
-  
 }
 @media (max-width: 620px) {
   .left_home {
@@ -141,7 +140,7 @@
   }
   .stories,
   .createPost,
-  .send_verification , .post{
+  .send_verification {
     width: 100%;
   }
   .stories .white_circle {
@@ -192,7 +191,3 @@
   font-weight: 500;
 }
 /*-----Activate popup----*/
-
-
-
-

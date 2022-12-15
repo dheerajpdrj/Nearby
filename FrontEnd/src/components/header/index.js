@@ -17,12 +17,11 @@ import {
   Home
 } from "../../svg";
 import { useRef, useState } from "react";
-import AllMenu from "./AllMenu";
 import useClickOutside from "../../helpers/clickOutside";
 import UserMenu from "../header/userMenu/index";
 
 
-export default function Header({page}) {
+export default function Header({ page }) {
   const { user } = useSelector((user) => ({ ...user }));
   const color = "#65676b";
   const [showSearchMenu, setShowSearchMenu] = useState(false);
@@ -63,39 +62,25 @@ export default function Header({page}) {
       <div className="header_middle">
         <Link to="/" className={`middle_icon ${page === "home" ? "active" : "hover1"}`}>
           {
-             page === "home" ? <HomeActive /> : <Home color={color} />
-            
+            page === "home" ? <HomeActive /> : <Home color={color} />
+
           }
 
         </Link>
         <Link to="/" className="middle_icon hover1">
           <Friends color={color} />
         </Link>
-        
+
       </div>
       <div className="header_right">
-        <Link to="/profile" className={`profile_link hover1 ${page==='profile' ? 'active_link':""}`}>
+        <Link to="/profile" className={`profile_link hover1 ${page === 'profile' ? 'active_link' : ""}`}>
           <img src={user?.picture} alt="" />
           <span>{user?.first_name}</span>
         </Link>
-        <div
-          className={`circle_icon hover1 ${showAllMenu && "active_header"}`}
-          ref={allMenu}>
-          <div onClick={() => {
-            setShowAllMenu((prev) => !prev);
-          }}>
-            <Menu />
-          </div>
-          {showAllMenu && <AllMenu />}
-        </div>
-        <div className="circle_icon hover1">
+        <Link to="/chats" className={`circle_icon hover1 ${page=== "chat" ? "active_link" : ""}`} >
           <Messenger />
-        </div>
-        <div className="circle_icon hover1">
-          <Notifications />
-          <div className="right_notification">5</div>
-        </div>
-        <div className="circle_icon hover1" ref={userMenu} >
+        </Link>
+        <div className="circle_icon hover1"  ref={userMenu} >
           <div onClick={() => {
             setShowUserMenu((prev) => (!prev))
           }}>

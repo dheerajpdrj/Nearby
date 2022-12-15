@@ -4,6 +4,7 @@ import { useState } from 'react'
 import ('./style.scss')
 
 export default function SendVerification({user}) {
+    
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -11,7 +12,7 @@ export default function SendVerification({user}) {
         try {
             const {data} = axios.post(`${process.env.REACT_APP_BACKEND_URL}/sendVerification`,{},{
                 headers:{
-                    Authorization : `Bearer${user.token}`
+                    Authorization : `Bearer ${user.token}`
                 }
             })
             setSuccess(data.message);
@@ -29,7 +30,7 @@ export default function SendVerification({user}) {
         onClick={()=>{
             sendVerificationLInk();
         }}>
-        click here to resend verification link
+        Click here to resend verification link
         </a>
         {success && <div className='success_text'>{success}</div>}
         {error && <div className='error_text'>{error}</div>}

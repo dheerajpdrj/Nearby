@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import Picker from "emoji-picker-react";
-export default function CreateComment({ user }) {
+import {comment} from '../../functions/post'
+export default function CreateComment({ user, postId,setComments }) {
     const [picker, setPicker] = useState(false);
     const [text, setText] = useState("");
-    const [error, setError] = useState("");
-    const [commentImage, setCommentImage] = useState("");
+    // const [error, setError] = useState("");
+    // const [commentImage, setCommentImage] = useState("");
     const [cursorPosition, setCursorPosition] = useState();
     const textRef = useRef(null);
     const imgInput = useRef(null);
+    
+
     useEffect(() => {
         textRef.current.selectionEnd = cursorPosition;
     }, [cursorPosition]);
@@ -20,27 +23,37 @@ export default function CreateComment({ user }) {
         setText(newText);
         setCursorPosition(start.length + emoji.length);
     };
-    const handleImage = (e) => {
-        let file = e.target.files[0];
-        if (
-            file.type !== "image/jpeg" &&
-            file.type !== "image/png" &&
-            file.type !== "image/webp" &&
-            file.type !== "image/gif"
-        ) {
-            setError(`${file.name} format is not supported.`);
-            return;
-        } else if (file.size > 1024 * 1024 * 5) {
-            setError(`${file.name} is too large max 5mb allowed.`);
-            return;
-        }
+    // const handleImage = (e) => {
+    //     let file = e.target.files[0];
+    //     if (
+    //         file.type !== "image/jpeg" &&
+    //         file.type !== "image/png" &&
+    //         file.type !== "image/webp" &&
+    //         file.type !== "image/gif"
+    //     ) {
+    //         setError(`${file.name} format is not supported.`);
+    //         return;
+    //     } else if (file.size > 1024 * 1024 * 5) {
+    //         setError(`${file.name} is too large max 5mb allowed.`);
+    //         return;
+    //     }
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            setCommentImage(event.target.result);
-        };
-    };
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = (event) => {
+    //         setCommentImage(event.target.result);
+    //     };
+    // };
+
+    const handleComment=  async (e)=>{
+        if(e.key === "Enter"){
+            console.log(text);
+            const comments = await comment(postId,text, user.token);
+            setComments(comments)
+            setText("")
+        }
+    }
+    
     return (
         <div className="create_comment_wrap">
             <div className="create_comment">
@@ -51,7 +64,7 @@ export default function CreateComment({ user }) {
                             <Picker onEmojiClick={handleEmoji} />
                         </div>
                     )}
-                    <input
+                    {/* <input
                         type="file"
                         hidden
                         ref={imgInput}
@@ -65,13 +78,14 @@ export default function CreateComment({ user }) {
                                 Try again
                             </button>
                         </div>
-                    )}
+                    )} */}
                     <input
                         type="text"
                         ref={textRef}
                         value={text}
                         placeholder="Write a comment..."
                         onChange={(e) => setText(e.target.value)}
+                        onKeyUp={handleComment}
                     />
                     <div
                         className="comment_circle_icon hover2"
@@ -81,15 +95,15 @@ export default function CreateComment({ user }) {
                     >
                         <i className="emoji_icon"></i>
                     </div>
-                    <div
+                    {/* <div
                         className="comment_circle_icon hover2"
                         onClick={() => imgInput.current.click()}
                     >
                         <i className="camera_icon"></i>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            {commentImage && (
+            {/* {commentImage && (
                 <div className="comment_img_preview">
                     <img src={commentImage} alt="" />
                     <div
@@ -99,7 +113,7 @@ export default function CreateComment({ user }) {
                         <i className="exit_icon"></i>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

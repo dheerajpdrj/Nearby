@@ -1,5 +1,5 @@
 import { Feeling, LiveVideo, Photo } from "../../svg";
-import "./style.scss";
+import "./style.css";
 export default function CreatePost({ user ,setVisible}) {
   return (
     <div className="createPost" onClick={()=>setVisible(true)}>

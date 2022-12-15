@@ -1,16 +1,19 @@
-import { Dots, NewRoom, Search } from "../../../svg";
 import Contact from "./Contact";
 import "./style.scss";
+
 export default function RightHome({ user }) {
   const color = "#65676b";
   return (
     <div className="right_home">
-      <div className="heading">Sponsored</div>
+      <div style={{display:'flex' }}>
+      <img src="../../../left/friends.png" alt=""  />
+      <div className="heading">Following</div>
+      </div>
       <div className="splitter1"></div>
       <div className="contacts_wrap">
         <div className="contacts_header">
-          <div className="contacts_header_left">Contacts</div>
-          <div className="contacts_header_right">
+          {/* <div className="contacts_header_left">Contacts</div> */}
+          {/* <div className="contacts_header_right">
             <div className="contact_circle hover1">
               <NewRoom color={color} />
             </div>
@@ -20,11 +23,14 @@ export default function RightHome({ user }) {
             <div className="contact_circle hover1">
               <Dots color={color} />
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="contacts_list">
-          <Contact user={user} />
+          {user?.following ?.map((friend)=>(
+          <Contact friend={friend} />   
+          ))}
         </div>
+       
       </div>
     </div>
   );

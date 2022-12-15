@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { profileReducer } from "../../functions/reducers";
 import Header from "../../components/header";
 import "./style.css";
-import Cover from "./Cover";
 import ProfielPictureInfos from "./ProfilePictureInfos";
 import ProfileMenu from "./ProfileMenu";
 import CreatePost from '../../components/createPost';
@@ -20,6 +19,7 @@ export default function Profile({ setVisible }) {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
   var userName = username === undefined ? user.username : username;
+  const [photos, setPhotos] = useState({}); 
   const [{ loading, error, profile }, dispatch] = useReducer(profileReducer, {
     loading: false,
     profile: {},
@@ -27,7 +27,11 @@ export default function Profile({ setVisible }) {
   });
   useEffect(() => {
     getProfile();
-  }, [userName]);
+  }, [userName,user.following]);
+  
+  const path = `${userName}/*`;
+  const max = 30;
+  const sort = "desc";
   
   let visitor = userName === user.username ? false : true;
 
@@ -47,6 +51,21 @@ export default function Profile({ setVisible }) {
       if (data.ok === false) {
         navigate("/profile");
       } else {
+        try {
+          const images = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/listImages`,
+            { path, sort, max },
+            {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+        setPhotos(images.data);
+          
+        } catch (error) {
+          console.log(error);
+        }
         dispatch({
           type: "PROFILE_SUCCESS",
           payload: data,
@@ -60,18 +79,18 @@ export default function Profile({ setVisible }) {
     }
   };
 
+
   return (
-    <div className="profile">
+    <div className="profile" >
       <Header page="profile" />
       <div className="profile_top">
         <div className="profile_container">
-          <Cover cover={profile.cover} visitor={visitor} />
-          <ProfielPictureInfos profile={profile} visitor = {visitor} />
+          <ProfielPictureInfos profile={profile} visitor = {visitor} photos={photos.resources} />
           <ProfileMenu />
           <div className="profile_grid">
             <div className="profile_left">
-              <Photos username={userName} />
-              <Friends friends={profile.friends} />
+              <Photos photos={photos} />
+              <Friends followers={profile.followers} following={profile.following} />
             </div>
             <div className="profile_right">
               

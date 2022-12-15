@@ -12,6 +12,8 @@ export function userReducer(state = Cookies.get("user") ? JSON.parse(Cookies.get
             
         case "VERIFY":
             return {...state,verified:action.payload};
+        case "FOLLOW":
+            return {...state,following:action.payload}
         default:
             return state;
     }

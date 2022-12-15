@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./style.scss"
+import "./style.css"
 import { useDispatch, useSelector } from 'react-redux';
 import CreatePost from '../../components/createPost';
 import Header from '../../components/header';

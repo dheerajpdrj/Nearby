@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import "./style.scss"
+import "./style.css"
 import { useSelector } from 'react-redux';
 import CreatePost from '../../components/createPost';
 import Header from '../../components/header';
@@ -10,8 +10,7 @@ import Post from '../../components/post';
 import { useState } from 'react';
 
 
-
-export default function Home({ setVisible, posts }) {
+export default function Home({ setVisible, posts, getAllPost }) {
   const { user } = useSelector((state) => ({ ...state }));
   const [height, setHeight] = useState('');
   const middle = useRef(null);
@@ -20,16 +19,16 @@ export default function Home({ setVisible, posts }) {
   }, [])
 
   return (
-    <div className='home' style={{ height: `${height + 150}px` }}>
-      <Header page={'home'} />
+    <div className="home" style={{ height: `${height + 150}px` }}>
+      <Header page="home" getAllPost={getAllPost} />
       <LeftHome user={user} />
       <div className="home_middle" ref={middle}>
         {user.verified === false && <SendVerification user={user} />}
         <CreatePost user={user} setVisible={setVisible} />
-        <div className='posts'> {posts?.map((post) =>{
-          return (<Post post={post} key={post._id} user={user} /> )}
-        )}
-       
+        <div className="posts">
+          {posts.map((post) => (
+            <Post key={post._id} post={post} user={user} />
+          ))}
         </div>
       </div>
       <RightHome user={user} />

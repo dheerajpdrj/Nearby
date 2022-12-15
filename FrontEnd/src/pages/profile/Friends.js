@@ -1,22 +1,45 @@
 
 
-export default function Friends({ friends }) {
+export default function Friends({ followers, following }) {
 
     return (
-
+        <>
             <div className="profile_card">
                 <div className="profile_card_header">
-                    Friends
+                    Following
                 </div>
                 <div className="profile_card_count">
-                    {friends?.length === 0 ? ""
-                        : friends?.length === 1 ? "1 Friend"
-                            : `${friends?.length} Friends`}
+                    {following?.length === 0 ? ""
+                        : following?.length === 1 ? "1 followers"
+                            : `${following?.length} followers`}
                 </div>
                 <div className="profile_card_grid">
-                    {friends && friends.slice(0, 9).map((friend) => (<div className='profile_photo_card'> </div>))}
+                    {following &&
+                        following.length &&
+                        following.slice(0, 9).map((followingg) => (<div className='profile_photo_card' >
+                            <img src={followingg.picture} alt="" />
+                            <span>{followingg.first_name} {followingg.last_name}</span>
+                        </div>))}
                 </div>
             </div>
 
+            <div className="profile_card">
+                <div className="profile_card_header" style={{ marginBottom: "15px" }}>
+                    Followers
+                </div>
+                <div className="profile_card_count">
+                    {followers?.length === 0 ? ""
+                        : followers?.length === 1 ? "1 following"
+                            : `${followers?.length} following`}
+                </div>
+                <div className="profile_card_grid">
+                    {followers &&
+                        followers.length &&
+                        followers.slice(0, 9).map((follower) => (<div className='profile_photo_card' >
+                            <img src={follower.picture} alt="" />
+                            <span>{follower.first_name} {follower.last_name}</span></div>))}
+                </div>
+            </div>
+        </>
     )
 }

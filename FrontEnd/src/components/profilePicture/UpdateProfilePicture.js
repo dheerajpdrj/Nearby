@@ -12,84 +12,96 @@ import Cookies from "js-cookie";
 
 export default function UpdateProfilePicture({ setImage, image, setError, setShow, propic }) {
 
-    const [crop, setCrop] = useState({ x: 0, y: 0 })
-    const [zoom, setZoom] = useState(1);
-    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const slider = useRef(null);
-    const { user } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
-
-    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-        setCroppedAreaPixels(croppedAreaPixels);
-    }, []);
-    const zoomIn = () => {
-        slider.current.stepUp();
-        setZoom(slider.current.value);
-    };
-    const zoomOut = () => {
-        slider.current.stepDown();
-        setZoom(slider.current.value);
-    };
-    const getCroppedImage = useCallback(
-        async (show) => {
-            try {
-                const img = await getCroppedImg(image, croppedAreaPixels);
-                if (show) {
-                    setZoom(1);
-                    setCrop({ x: 0, y: 0 });
-                    setImage(img);
-                } else {
-                    console.log(img);
-
-                    return img;
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        [croppedAreaPixels]
-    );
-
-    const updateProfilePicture = async () => {
-        try {
-            setLoading(true);
-            let img = await getCroppedImage();
-            let blob = await fetch(img).then((b) => b.blob());
-            const path = `${user.username}/profile_pictures`;
-            let formdata = new FormData();
-            formdata.append('file', blob);
-            formdata.append('path', path);
-            const res = await uploadImages(formdata, path, user.token);
-            const updatedPicture = await updateprofilePicture(res[0].url, user.token);
-            if (updatedPicture === "ok") {
-                const profilePicturePost = await createPost('profilePicture', null, null, res, user.id, user.token);
-                if (profilePicturePost.status === "ok") {
-                    setLoading(false);
-                    setImage("");
-                    propic.current.style.backgroundImage = `url(${res[0].url})`;
-                    Cookies.set("user", JSON.stringify({
-                        ...user,
-                        picture: res[0].url
-                    }))
-                    dispatch({
-                        type: "UPDATEPROFILEPICTURE",
-                        payload: res[0].url,
-                    })
-                    setShow(false);
-                } else {
-                    setLoading(false);
-                    setError(profilePicturePost);
-                }
-            } else {
-                setLoading(false);
-                setError(updatedPicture);
-            }
-        } catch (error) {
-            setError(error.response.data.error)
+  const [description, setDescription] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const slider = useRef(null);
+  const { user } = useSelector((state) => ({ ...state }));
+  const [loading, setLoading] = useState(false);
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+  const zoomIn = () => {
+    slider.current.stepUp();
+    setZoom(slider.current.value);
+  };
+  const zoomOut = () => {
+    slider.current.stepDown();
+    setZoom(slider.current.value);
+  };
+  const getCroppedImage = useCallback(
+    async (show) => {
+      try {
+        const img = await getCroppedImg(image, croppedAreaPixels);
+        if (show) {
+          setZoom(1);
+          setCrop({ x: 0, y: 0 });
+          setImage(img);
+        } else {
+          return img;
         }
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [croppedAreaPixels]
+  );
+  const updateProfielPicture = async () => {
+    try {
+      setLoading(true);
+      let img = await getCroppedImage();
+      let blob = await fetch(img).then((b) => b.blob());
+      const path = `${user.username}/profile_pictures`;
+      let formData = new FormData();
+      formData.append("file", blob);
+      formData.append("path", path);
+      const res = await uploadImages(formData, path, user.token);
+      const updated_picture = await updateprofilePicture(
+        res[0].url,
+        user.token
+      );
+      if (updated_picture === "ok") {
+        const new_post = await createPost(
+          "profilePicture",
+          null,
+          description,
+          res,
+          user.id,
+          user.token
+        );
+        if (new_post.status === "ok") {
+          setLoading(false);
+          setImage("");
+          propic.current.style.backgroundImage = `url(${res[0].url})`;
+          Cookies.set(
+            "user",
+            JSON.stringify({
+              ...user,
+              picture: res[0].url,
+            })
+          );
+          dispatch({
+            type: "UPDATEPICTURE",
+            payload: res[0].url,
+          });
+          setShow(false);
+        } else {
+          setLoading(false);
 
+          setError(new_post.data);
+        }
+      } else {
+        setLoading(false);
+
+        setError(updated_picture);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.response.data.message)
+    }
+  };
     return (
         <div className="postBox update_img">
             <div className="box_header">
@@ -138,7 +150,7 @@ export default function UpdateProfilePicture({ setImage, image, setError, setSho
             </div>
             <div className="update_submit_wrap">
                 <div className="blue_link">Cancel</div>
-                <button className="blue_btn" disabled={loading} onClick={() => { updateProfilePicture() }}>{loading ? <PulseLoader color="#fff" size={5} /> : "Save"}</button>
+                <button className="blue_btn" disabled={loading} onClick={() => { updateProfielPicture() }}>{loading ? <PulseLoader color="#fff" size={5} /> : "Save"}</button>
             </div>
         </div>
     );

@@ -11,14 +11,16 @@ export default function LeftHome({ user }) {
           {user?.first_name} {user.last_name}
         </span>
       </Link>
-      {left.slice(0, 1).map((link, i) => (
-        <LeftLink
-          key={i}
-          img={link.img}
-          text={link.text}
-          notification={link.notification}
-        />
-      ))}
+      <Link to={'/friends'}>
+        {left.slice(0, 1).map((link, i) => (
+          <LeftLink
+            key={i}
+            img={link.img}
+            text={link.text}
+            notification={link.notification}
+          />
+        ))}
+      </Link>
     </div>
   );
 }

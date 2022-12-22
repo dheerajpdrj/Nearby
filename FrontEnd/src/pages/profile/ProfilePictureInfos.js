@@ -7,7 +7,6 @@ export default function ProfielPictureInfos({ profile, visitor , photos }) {
     const [show, setShow] = useState(false);
     const showref = useRef(null)
     const propic = useRef(null);
-    console.log(profile,'yyyy');
 
     return (
         <div className="profile_img_wrap">

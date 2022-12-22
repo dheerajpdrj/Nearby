@@ -1,4 +1,4 @@
-import { Feeling, LiveVideo, Photo } from "../../svg";
+import { Photo } from "../../svg";
 import "./style.css";
 export default function CreatePost({ user ,setVisible}) {
   return (

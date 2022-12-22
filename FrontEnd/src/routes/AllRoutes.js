@@ -11,6 +11,7 @@ import NotLoggedInRoutes from "../routes/NotLoggedInRoutes";
 import { postsReducer } from "../functions/reducers";
 import { getAllPost } from "../functions/getAllPosts";
 import Chat from "../pages/Chat/Chat";
+import FriendsPage from "../pages/FriendsPage/FriendsPage";
 
 
 export default function AllRoutes () {
@@ -22,9 +23,6 @@ export default function AllRoutes () {
       posts: []
     });
   
-    useEffect(() => {
-      getAllPost(dispatch,user);
-    }, [user]);
   
     return (
         <div>
@@ -33,9 +31,11 @@ export default function AllRoutes () {
                 <Route element={<LoggedInRoutes />} >
                     <Route path="/profile" element={<Profile setVisible={setVisible} />} exact />
                     <Route path="/profile/:username" element={<Profile setVisible={setVisible} />} exact />
-                    <Route path="/" element={ <Home setVisible={setVisible} posts={posts} getAllPost={getAllPost} /> } exact />
+                    <Route path="/" element={ <Home setVisible={setVisible} posts={posts} dispatch={dispatch} getAllPost={getAllPost} /> } exact />
                     <Route path="/activate/:token" element={<Activate />} exact />
                     <Route path="/chats" element={ <Chat /> } exact />
+                    <Route path="/friends" element={ <FriendsPage setVisible={setVisible} /> } exact />
+                    <Route path="/friends/:type" element={ <FriendsPage setVisible={setVisible} /> } exact />
                 </Route>
 
                 <Route element={<NotLoggedInRoutes />}>

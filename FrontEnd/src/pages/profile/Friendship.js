@@ -70,7 +70,7 @@ const navigate = useNavigate();
           <span>Follow</span>
         </button>
       )}
-      
+      {friendship?.following &&
         <button className={friendship?.following ? "blue_btn" : "gray_btn"} onClick={()=>{handleChat()}} >
 
           <img
@@ -80,6 +80,7 @@ const navigate = useNavigate();
           />
           <span>Message</span>
         </button>
+        }
     </div>
   );
 }

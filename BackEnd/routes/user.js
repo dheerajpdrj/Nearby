@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {register, activateAccount, login, sendVerification,getUser, getProfile, updateProfilePicture, follow, unFollow, } = require('../controllers/user');
+const {register, activateAccount, login, sendVerification,getUser, getProfile, updateProfilePicture, follow, unFollow, search, getFriendsPageInfos, } = require('../controllers/user');
 const { authUser } = require('../middleware/auth');
 
 router.post('/register', register);
@@ -12,5 +12,7 @@ router.get('/getProfile/:username',authUser, getProfile);
 router.put('/updateProfilePicture',authUser, updateProfilePicture);
 router.put('/follow/:id',authUser, follow);
 router.put('/unFollow/:id',authUser, unFollow);
+router.get('/search', authUser,search);
+router.get("/getFriendsPageInfos", authUser, getFriendsPageInfos);
 
 module.exports=router;

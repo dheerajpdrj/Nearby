@@ -296,3 +296,33 @@ exports.unFollow = async (req, res) => {
 
   }
 }
+
+exports.search = async (req,res)=>{
+  const {q} = req.query;
+  console.log(q);
+
+  try {  
+    const users = await User.find({first_name:{$regex:`(?i)${q}`}}).select("first_name last_name username picture");
+    console.log(users)
+    res.status(200).json(users)
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
+  
+};
+
+
+exports.getFriendsPageInfos = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select("following followers")
+      .populate("following", "first_name last_name picture username")
+      .populate("followers", "first_name last_name picture username");
+    res.json({
+      following: user.following,
+      followers: user.followers,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

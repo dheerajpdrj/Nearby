@@ -16,7 +16,7 @@ export default function Friends({ followers, following }) {
                 <div className="profile_card_grid">
                     {following &&
                         following.length &&
-                        following.slice(0, 9).map((followingg) => (<div className='profile_photo_card' >
+                        following.slice(0, 9).map((followingg,i) => (<div className='profile_photo_card' key={i} >
                             <img src={followingg.picture} alt="" />
                             <span>{followingg.first_name} {followingg.last_name}</span>
                         </div>))}
@@ -35,7 +35,7 @@ export default function Friends({ followers, following }) {
                 <div className="profile_card_grid">
                     {followers &&
                         followers.length &&
-                        followers.slice(0, 9).map((follower) => (<div className='profile_photo_card' >
+                        followers.slice(0, 9).map((follower, i) => (<div className='profile_photo_card' key={i} >
                             <img src={follower.picture} alt="" />
                             <span>{follower.first_name} {follower.last_name}</span></div>))}
                 </div>

@@ -14,17 +14,14 @@ export default function Post({ post, user, profile }) {
   const [reacts, setReacts] = useState();
   const [check, setCheck] = useState();
   const [total, setTotal] = useState(0);
-  const [comments, setComments] = useState(post?.comments);
   const [count, setCount] = useState(1);
-
+  const [comments, setComments] = useState([]);
   useEffect(() => {
     getPostReacts();
   }, [post]);
-
   useEffect(() => {
     setComments(post?.comments);
-  }, [post])
-
+  }, [post]);
   const getPostReacts = async () => {
     const res = await getReacts(post._id, user.token);
     setReacts(res.reacts);
@@ -57,11 +54,9 @@ export default function Post({ post, user, profile }) {
       }
     }
   };
-
   const showMore = () => {
-    setCount((prev) => prev + 3)
-  }
-
+    setCount((prev) => prev + 3);
+  };
   return (
     <div className="post" style={{ width: `${profile && "100%"}` }}>
       <div className="post_header">
@@ -90,12 +85,12 @@ export default function Post({ post, user, profile }) {
             </div>
           </div>
         </Link>
-        <div
+        {/* <div
           className="post_header_right hover1"
           onClick={() => setShowMenu((prev) => !prev)}
         >
           <Dots color="#828387" />
-        </div>
+        </div> */}
       </div>
       {post.background ? (
         <div
@@ -159,17 +154,16 @@ export default function Post({ post, user, profile }) {
                 })
                 .slice(0, 3)
                 .map(
-                  (react) =>
+                  (react, i) =>
                     react.count > 0 && (
-                      <img src={`../../../reacts/${react.react}.svg`} alt="" />
+                      <img src={`../../../reacts/${react.react}.svg`} key={i} alt="" />
                     )
                 )}
           </div>
           <div className="reacts_count_num">{total > 0 && total}</div>
         </div>
         <div className="to_right">
-          <div className="comments_count">13 comments</div>
-          <div className="share_count">1 share</div>
+          <div className="comments_count">{comments.length} comments</div>
         </div>
       </div>
       <div className="post_actions">

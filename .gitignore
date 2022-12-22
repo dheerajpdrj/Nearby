@@ -27,3 +27,5 @@
 
 /BackEnd/.env
 /BackEnd/node_modules
+
+/Socket/node_modules

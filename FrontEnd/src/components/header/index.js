@@ -14,7 +14,8 @@ import {
   Messenger,
   ArrowDown,
   Notifications,
-  Home
+  Home,
+  FriendsActive
 } from "../../svg";
 import { useRef, useState } from "react";
 import useClickOutside from "../../helpers/clickOutside";
@@ -67,8 +68,11 @@ export default function Header({ page }) {
           }
 
         </Link>
-        <Link to="/" className="middle_icon hover1">
-          <Friends color={color} />
+        <Link to="/friends" className={`middle_icon ${page === "friends" ? "active" : "hover1"}`}>
+          {
+            page === "friends" ? <FriendsActive /> : <Friends color={color} /> 
+
+          }
         </Link>
 
       </div>
@@ -77,10 +81,10 @@ export default function Header({ page }) {
           <img src={user?.picture} alt="" />
           <span>{user?.first_name}</span>
         </Link>
-        <Link to="/chats" className={`circle_icon hover1 ${page=== "chat" ? "active_link" : ""}`} >
+        <Link to="/chats" className={`circle_icon hover1 ${page === "chat" ? "active_link" : ""}`} >
           <Messenger />
         </Link>
-        <div className="circle_icon hover1"  ref={userMenu} >
+        <div className="circle_icon hover1" ref={userMenu} >
           <div onClick={() => {
             setShowUserMenu((prev) => (!prev))
           }}>

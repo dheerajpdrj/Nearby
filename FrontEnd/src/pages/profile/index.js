@@ -11,15 +11,17 @@ import CreatePost from '../../components/createPost';
 import Post from '../../components/post';
 import Photos from "./Photos";
 import Friends from "./Friends";
+import CreatePostPopup from "../../components/createPostPopup";
 
 
 
-export default function Profile({ setVisible }) {
+export default function Profile() {
   const { username } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
-  var userName = username === undefined ? user.username : username;
   const [photos, setPhotos] = useState({}); 
+  const [visible, setVisible] = useState(false); 
+  var userName = username === undefined ? user.username : username;
   const [{ loading, error, profile }, dispatch] = useReducer(profileReducer, {
     loading: false,
     profile: {},
@@ -82,6 +84,7 @@ export default function Profile({ setVisible }) {
 
   return (
     <div className="profile" >
+       {visible && <CreatePostPopup user={user} setVisible={setVisible} posts={profile?.post} dispatch={dispatch} profile />}
       <Header page="profile" />
       <div className="profile_top">
         <div className="profile_container">
@@ -94,7 +97,7 @@ export default function Profile({ setVisible }) {
             </div>
             <div className="profile_right">
               
-              {!visitor ? <CreatePost user={user} setVisible={setVisible} /> : "" }
+              {!visitor && (<CreatePost user={user} profile setVisible={setVisible} /> ) }
               <div className="createPost">
                 <div
                   className="createPost_header">

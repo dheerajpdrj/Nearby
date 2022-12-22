@@ -26,8 +26,8 @@ export default function RightHome({ user }) {
           </div> */}
         </div>
         <div className="contacts_list">
-          {user?.following ?.map((friend)=>(
-          <Contact friend={friend} />   
+          {user?.following ?.map((friend, i)=>(
+          <Contact friend={friend} key={i} />   
           ))}
         </div>
        

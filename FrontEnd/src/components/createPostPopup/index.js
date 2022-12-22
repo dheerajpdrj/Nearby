@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import "./style.css";
-import Picker from "emoji-picker-react";
 import EmojiPickerBackgrounds from "./EmojiPickerBackgrounds";
 import AddToYourPost from "./AddToYourPost";
 import ImagePreview from "./ImagePreview";
@@ -10,7 +9,9 @@ import PulseLoader from "react-spinners/PulseLoader";
 import PostError from "./PostError";
 import dataURItoBlob from "../../helpers/dataURItoBlob";
 import { uploadImages } from "../../functions/uploadImages";
-export default function CreatePostPopup({ user, setVisible , posts, dispatch }) {
+
+export default function CreatePostPopup({ user, setVisible , posts, dispatch , profile}) {
+  console.log(posts)
   const popup = useRef(null);
   const [text, setText] = useState("");
   const [showPrev, setShowPrev] = useState(false);
@@ -35,9 +36,9 @@ export default function CreatePostPopup({ user, setVisible , posts, dispatch }) 
       setLoading(false);
       if (response.status === "ok") {
         dispatch({
-          type:'POSTS_SUCCESS',
-          payload:[response.data, ...posts]
-        })
+          type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+          payload: [response.data, ...posts],
+        });
         setBackground("");
         setText("");
         setVisible(false);
@@ -49,7 +50,7 @@ export default function CreatePostPopup({ user, setVisible , posts, dispatch }) 
       const postImages = images.map((img) => {
         return dataURItoBlob(img);
       });
-      const path = `${user.username}/post_Images`;
+      const path = `${user.username}/post_images`;
       let formData = new FormData();
       formData.append("path", path);
       postImages.forEach((image) => {
@@ -68,9 +69,9 @@ export default function CreatePostPopup({ user, setVisible , posts, dispatch }) 
       setLoading(false);
       if (res.status === "ok") {
         dispatch({
-          type:'POSTS_SUCCESS',
-          payload:[res.data, ...posts]
-        })
+          type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+          payload: [res.data, ...posts],
+        });
         setText("");
         setImages("");
         setVisible(false);
@@ -89,10 +90,11 @@ export default function CreatePostPopup({ user, setVisible , posts, dispatch }) 
       );
       setLoading(false);
       if (response.status === "ok") {
+        console.log(response,'sheeraj');
         dispatch({
-          type:'POSTS_SUCCESS',
-          payload:[response.data, ...posts]
-        })
+          type: profile ? "PROFILE_POSTS" : "POSTS_SUCCESS",
+          payload: [response.data, ...posts],
+        });
         setBackground("");
         setText("");
         setVisible(false);
@@ -103,6 +105,7 @@ export default function CreatePostPopup({ user, setVisible , posts, dispatch }) 
       console.log("nothing");
     }
   };
+  
   return (
     <div className="blur">
       <div className="postBox" ref={popup}>

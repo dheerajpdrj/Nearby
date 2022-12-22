@@ -1,6 +1,6 @@
 export const left = [
   {
-    text: "Find friends",
+    text: "Friends",
     img: "friends",
   },
   {

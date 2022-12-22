@@ -51,6 +51,22 @@ try {
       return error.response.data.message;
     }
   };
+
+  export const getFriendsPageInfos = async (token) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/getFriendsPageInfos`, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return error.response.data.message;
+    }
+  };
 //   export const acceptRequest = async (id, token) => {
 //     try {
 //       const { data } = await axios.put(
